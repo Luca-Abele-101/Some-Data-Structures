@@ -7,20 +7,20 @@ int main()
 	setlocale(LC_ALL, "rus");
 
     BinarySearchTree<int> sus;
-	std::cout << "Пусто ли дерево (0/1): " << sus.isEmpty() << "\n"; 
+	std::cout << "Пусто ли дерево (0/1): " << sus.isEmpty() << "\n";
 	sus.insert(5);
 	sus.insert(6);
 	sus.insert(4); // Тест 2.1 (Вставка узла по правилам бинарного дерева)
 	sus.insert(7);
 	std::cout << "Пусто ли дерево (0/1): " << sus.isEmpty() << "\n\n";
-	
+
 	// Тест 4.1 (Печать дерева)
 	std::cout << "Печать дерева:\n";
 	sus.print(std::cout);
 
 	// Тест 1.1 (Итеративный поиск узла)
 	std::cout << "\nЭлемент со значением \"4\": " << (sus.iterativeSearch(4))->key_ << "\n";
-	
+
 	// Тест 1.2 (Рекурсивный поиск узла)
 	std::cout << "\nЭлемент со значением \"4\": " << (sus.recursiveSearch(sus.getRoot(), 4))->key_ << "\n\n";
 

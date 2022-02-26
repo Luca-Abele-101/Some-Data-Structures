@@ -31,7 +31,7 @@ public:
 	virtual ~BinarySearchTree();
 
 	bool operator== (const BinarySearchTree<T>& src);
-	
+
 	Node<T>* iterativeSearch(const T& key) const;
 	Node<T>* recursiveSearch(Node<T>* x, const T& key) const;
 	Node<T>* findMinimum(Node<T>* subtree) const;
@@ -46,16 +46,16 @@ public:
 	void print(std::ostream& out) const;
 
 	int getCount() const;
-	
+
 	Node<T>* getRoot() const;
 
 	int getHeight() const;
 
-	// 7 Инфиксный обход дерева (итеративный) 
+	// 7 РРЅС„РёРєСЃРЅС‹Р№ РѕР±С…РѕРґ РґРµСЂРµРІР° (РёС‚РµСЂР°С‚РёРІРЅС‹Р№)
 	void iterativeInorderWalk() const;
 
-	// 8.1 Инфиксный обход дерева (рекурсивный) 
-	void inorderWalk() const;  //  void (*visit)(T)
+	// 8.1 РРЅС„РёРєСЃРЅС‹Р№ РѕР±С…РѕРґ РґРµСЂРµРІР° (СЂРµРєСѓСЂСЃРёРІРЅС‹Р№)
+	void inorderWalk() const;
 
 	bool isEmpty();
 
@@ -63,7 +63,7 @@ private:
 	Node<T>* root_;
 
 	bool insertNode(Node<T>* key, Node<T>* start);
-	
+
 	void swap(BinarySearchTree <T>& left, BinarySearchTree <T>& right);
 
 	void deleteSubtree(Node<T>* node);
@@ -77,12 +77,12 @@ private:
 
 	int getCountSubTree(const Node<T>* node) const;
 
-	// 6.2 Рекурсивная функция определения высоты дерева
+	// 6.2 Р РµРєСѓСЂСЃРёРІРЅР°СЏ С„СѓРЅРєС†РёСЏ РѕРїСЂРµРґРµР»РµРЅРёСЏ РІС‹СЃРѕС‚С‹ РґРµСЂРµРІР°
 	int getHeightSubTree(Node<T>* node) const;
 
-	void inorderWalk(Node<T>* node) const;  //, void (*visit)(T)
+	void inorderWalk(Node<T>* node) const;
 	void iterativeInorderWalk(Node<T>* node) const;
-	
+
 };
 
 
@@ -135,7 +135,7 @@ bool BinarySearchTree<T>::operator== (const BinarySearchTree <T>& src)
 	std::stack<Node<T>*> nodeStackL;
 	std::stack<Node<T>*> nodeStackR;
 
-	// Обходим деревья и заносим их в вектора
+	// РћР±С…РѕРґРёРј РґРµСЂРµРІСЊСЏ Рё Р·Р°РЅРѕСЃРёРј РёС… РІ РІРµРєС‚РѕСЂР°
 	while ((nodeStackL.size() != 0) || (nodeL != nullptr))
 	{
 		if (nodeL != nullptr)
@@ -167,7 +167,7 @@ bool BinarySearchTree<T>::operator== (const BinarySearchTree <T>& src)
 		}
 	}
 
-	//Сравниваем деревья в векторной форме
+	// РЎСЂР°РІРЅРёРІР°РµРј РґРµСЂРµРІСЊСЏ РІ РІРµРєС‚РѕСЂРЅРѕР№ С„РѕСЂРјРµ
 	return vL == vR;
 }
 
@@ -308,9 +308,9 @@ BinarySearchTree<T>::Node<T>* BinarySearchTree<T>::findMaximum(Node<T>* subtree)
 }
 
 template <class T>
-void BinarySearchTree<T>::inorderWalk() const  //  void (*visit)(T)
+void BinarySearchTree<T>::inorderWalk() const
 {
-	return inorderWalk(this->root_);  //  , visit
+	return inorderWalk(this->root_);
 }
 
 template <class T>
@@ -390,17 +390,17 @@ void BinarySearchTree<T>::deleteSubtree(Node<T>* node)
 {
 	if (node == nullptr)
 	{
-		//std::cout << "Дерево\\Ключ при деструкции уже пусто\n";
+		//std::cout << "Р”РµСЂРµРІРѕ\\РљР»СЋС‡ РїСЂРё РґРµСЃС‚СЂСѓРєС†РёРё СѓР¶Рµ РїСѓСЃС‚Рѕ\n";
 	}
 	else
 	{
 		if (node->right_ == nullptr)
 		{
-			//std::cout << "Правая ветвь пуста";
+			//std::cout << "РџСЂР°РІР°СЏ РІРµС‚РІСЊ РїСѓСЃС‚Р°";
 		}
 		else
 		{
-			//std::cout << "Удаляю правую ветвь";
+			//std::cout << "РЈРґР°Р»СЏСЋ РїСЂР°РІСѓСЋ РІРµС‚РІСЊ";
 			deleteSubtree(node->right_);
 		}
 		delete node->right_;
@@ -408,17 +408,17 @@ void BinarySearchTree<T>::deleteSubtree(Node<T>* node)
 
 		if (node->left_ == nullptr)
 		{
-			//std::cout << "Левая ветвь пуста";
+			//std::cout << "Р›РµРІР°СЏ РІРµС‚РІСЊ РїСѓСЃС‚Р°";
 		}
 		else
 		{
-			//std::cout << "Удаляю левую ветвь";
+			//std::cout << "РЈРґР°Р»СЏСЋ Р»РµРІСѓСЋ РІРµС‚РІСЊ";
 			deleteSubtree(node->left_);
 		}
 		delete node->left_;
 		node->left_ = nullptr;
 
-		if (node->p_ == nullptr) // node - корень
+		if (node->p_ == nullptr) // node - РєРѕСЂРµРЅСЊ
 		{
 			root_ = nullptr;
 			delete node;
@@ -428,13 +428,12 @@ void BinarySearchTree<T>::deleteSubtree(Node<T>* node)
 }
 
 template <class T>
-void BinarySearchTree<T>::inorderWalk(Node<T>* node) const //, void(*visit)(T)
+void BinarySearchTree<T>::inorderWalk(Node<T>* node) const
 {
 	if (node != nullptr)
 	{
 		inorderWalk(node->left_);
-		//(*visit)(node->key_); - здесь могла быть реализована универсальная функция
-		std::cout << node->key_ << " "; // пример действия, которое можно заменить универальной подстановкой функции
+		std::cout << node->key_ << " ";
 		inorderWalk(node->right_);
 	}
 }
@@ -443,7 +442,6 @@ template <class T>
 void BinarySearchTree<T>::iterativeInorderWalk(Node<T>* node) const
 {
 	std::stack<Node<T>*> vault;
-	//std::Stack<Node<T>*>* vault = new Stack<>();
 	while ((vault.size() != 0) || (node != nullptr))
 	{
 		if (node != nullptr)
@@ -487,13 +485,13 @@ bool BinarySearchTree<T>::deleteKey(const T& key)
 	Node<T>* current = this->iterativeSearch(key);
 	if (current == nullptr)
 	{
-		// Дерево/Ключ при удалении уже пусто
+		// Р”РµСЂРµРІРѕ/РљР»СЋС‡ РїСЂРё СѓРґР°Р»РµРЅРёРё СѓР¶Рµ РїСѓСЃС‚Рѕ
 		return false;
 	}
 
-	if ((current->left_ == nullptr) && (current->right_ == nullptr))  // Мы в листе
+	if ((current->left_ == nullptr) && (current->right_ == nullptr))  // РњС‹ РІ Р»РёСЃС‚Рµ
 	{
-		if (current->p_ == nullptr) // Мы в корне
+		if (current->p_ == nullptr) // РњС‹ РІ РєРѕСЂРЅРµ
 		{
 			root_ = nullptr;
 			delete current;
@@ -501,13 +499,13 @@ bool BinarySearchTree<T>::deleteKey(const T& key)
 		}
 		else
 		{
-			if ((current->p_->left_ != nullptr) && (current->p_->left_->key_ == current->key_)) // Лист - левый ребенок
+			if ((current->p_->left_ != nullptr) && (current->p_->left_->key_ == current->key_)) // Р›РёСЃС‚ - Р»РµРІС‹Р№ СЂРµР±РµРЅРѕРє
 			{
 				current->p_->left_ = nullptr;
 				delete current;
 				return true;
 			}
-			if ((current->p_->right_ != nullptr) && (current->p_->right_->key_ == current->key_)) // Лист - правый ребёнок
+			if ((current->p_->right_ != nullptr) && (current->p_->right_->key_ == current->key_)) // Р›РёСЃС‚ - РїСЂР°РІС‹Р№ СЂРµР±С‘РЅРѕРє
 			{
 				current->p_->right_ = nullptr;
 				delete current;
@@ -515,9 +513,9 @@ bool BinarySearchTree<T>::deleteKey(const T& key)
 			}
 		}
 	}
-	else if ((current->left_ != nullptr) && (current->right_ == nullptr))  // Узел только с левым ребенком
+	else if ((current->left_ != nullptr) && (current->right_ == nullptr))  // РЈР·РµР» С‚РѕР»СЊРєРѕ СЃ Р»РµРІС‹Рј СЂРµР±РµРЅРєРѕРј
 	{
-		if (current->p_ == nullptr) // Мы в корне
+		if (current->p_ == nullptr) // РњС‹ РІ РєРѕСЂРЅРµ
 		{
 			current->left_->p_ = nullptr;
 			root_ = current->left_;
@@ -526,14 +524,14 @@ bool BinarySearchTree<T>::deleteKey(const T& key)
 		}
 		else
 		{
-			if ((current->p_->left_ != nullptr) && (current->p_->left_->key_ == current->key_)) // Узел - левый ребенок
+			if ((current->p_->left_ != nullptr) && (current->p_->left_->key_ == current->key_)) // РЈР·РµР» - Р»РµРІС‹Р№ СЂРµР±РµРЅРѕРє
 			{
 				current->left_->p_ = current->p_;
 				current->p_->left_ = current->left_;
 				delete current;
 				return true;
 			}
-			if ((current->p_->right_ != nullptr) && (current->p_->right_->key_ == current->key_)) // Узел - правый ребёнок
+			if ((current->p_->right_ != nullptr) && (current->p_->right_->key_ == current->key_)) // РЈР·РµР» - РїСЂР°РІС‹Р№ СЂРµР±С‘РЅРѕРє
 			{
 				current->left_->p_ = current->p_;
 				current->p_->right_ = current->left_;
@@ -542,9 +540,9 @@ bool BinarySearchTree<T>::deleteKey(const T& key)
 			}
 		}
 	}
-	else if ((current->left_ == nullptr) && (current->right_ != nullptr))  // Узел только с правым ребенком
+	else if ((current->left_ == nullptr) && (current->right_ != nullptr))  // РЈР·РµР» С‚РѕР»СЊРєРѕ СЃ РїСЂР°РІС‹Рј СЂРµР±РµРЅРєРѕРј
 	{
-		if (current->p_ == nullptr) // Мы в корне
+		if (current->p_ == nullptr) // РњС‹ РІ РєРѕСЂРЅРµ
 		{
 			current->right_->p_ = nullptr;
 			root_ = current->right_;
@@ -553,14 +551,14 @@ bool BinarySearchTree<T>::deleteKey(const T& key)
 		}
 		else
 		{
-			if ((current->p_->left_ != nullptr) && (current->p_->left_->key_ == current->key_)) // Узел - левый ребенок
+			if ((current->p_->left_ != nullptr) && (current->p_->left_->key_ == current->key_)) // РЈР·РµР» - Р»РµРІС‹Р№ СЂРµР±РµРЅРѕРє
 			{
 				current->right_->p_ = current->p_;
 				current->p_->left_ = current->right_;
 				delete current;
 				return true;
 			}
-			if ((current->p_->right_ != nullptr) && (current->p_->right_->key_ == current->key_)) // Узел - правый ребёнок
+			if ((current->p_->right_ != nullptr) && (current->p_->right_->key_ == current->key_)) // РЈР·РµР» - РїСЂР°РІС‹Р№ СЂРµР±С‘РЅРѕРє
 			{
 				current->right_->p_ = current->p_;
 				current->p_->right_ = current->right_;
@@ -569,15 +567,15 @@ bool BinarySearchTree<T>::deleteKey(const T& key)
 			}
 		}
 	}
-	else if ((current->left_ != nullptr) && (current->right_ != nullptr))  // У узла два ребёнка
+	else if ((current->left_ != nullptr) && (current->right_ != nullptr))  // РЈ СѓР·Р»Р° РґРІР° СЂРµР±С‘РЅРєР°
 	{
-		Node<T>* x = current->right_; // х будет минимальным элементом правого поддерева и встанет на замену удаляемому узлу
+		Node<T>* x = current->right_; // С… Р±СѓРґРµС‚ РјРёРЅРёРјР°Р»СЊРЅС‹Рј СЌР»РµРјРµРЅС‚РѕРј РїСЂР°РІРѕРіРѕ РїРѕРґРґРµСЂРµРІР° Рё РІСЃС‚Р°РЅРµС‚ РЅР° Р·Р°РјРµРЅСѓ СѓРґР°Р»СЏРµРјРѕРјСѓ СѓР·Р»Сѓ
 		while (x->left_ != nullptr)
 		{
 			x = x->left_;
 		}
-		
-		// Добавляем к родителю возможную правую ветку x
+
+		// Р”РѕР±Р°РІР»СЏРµРј Рє СЂРѕРґРёС‚РµР»СЋ РІРѕР·РјРѕР¶РЅСѓСЋ РїСЂР°РІСѓСЋ РІРµС‚РєСѓ x
 		x->p_->left_ = x->right_;
 		if (x->right_ != nullptr)
 		{
