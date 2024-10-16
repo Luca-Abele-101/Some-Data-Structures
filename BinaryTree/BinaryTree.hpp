@@ -9,15 +9,15 @@ template <class T>
 class BinarySearchTree
 {
 public:
-	template <class T>
+	template <class N>
 	struct Node
 	{
-		T  key_;
-		Node<T>* left_;
-		Node<T>* right_;
-		Node<T>* p_;
+		N  key_;
+		Node<N>* left_;
+		Node<N>* right_;
+		Node<N>* p_;
 
-		Node(T key, Node* left = nullptr, Node* right = nullptr, Node* p = nullptr) :
+		Node(N key, Node* left = nullptr, Node* right = nullptr, Node* p = nullptr) :
 			key_(key), left_(left), right_(right), p_(p)
 		{  }
 	};
@@ -589,7 +589,5 @@ bool BinarySearchTree<T>::deleteKey(const T& key)
 
 	return false;
 }
-
-
 
 #endif
