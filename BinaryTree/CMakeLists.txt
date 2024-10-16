@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.0)
 project(BinaryTree VERSION 1.0)
 
 set(SRC
-BinaryTree.hpp
+BinaryTree.h
+BinaryTree.tpp
 main.cpp
 )
 

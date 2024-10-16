@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 
-#include "BinaryTree.hpp"
+#include "BinaryTree.h"
 
 int main()
 {
@@ -80,14 +80,6 @@ int main()
 	treeDegenerated.insert(25);
 	treeDegenerated.insert(75);
 	treeDegenerated.print(std::cout);
-
-	std::cout << "\nИтеративный обход дерева в ширину:\n";
-	std::cout << "Сбалансированное: ";
-	treeCasual.wideWalk();
-	std::cout << "Пустое: ";
-	treeEmpty.wideWalk();
-	std::cout << "Вырожденное: ";
-	treeDegenerated.wideWalk();
 
 	std::cout << "\nИтеративный обход дерева (инфиксный):\n";
 	std::cout << "Сбалансированное: ";
