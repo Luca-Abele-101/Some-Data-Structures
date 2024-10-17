@@ -4,6 +4,7 @@ project(BinaryTree VERSION 1.0)
 
 set(SRC
 BinaryTree.hpp
+BinaryTree.tpp
 main.cpp
 )
 
