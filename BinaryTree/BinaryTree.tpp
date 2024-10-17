@@ -1,4 +1,4 @@
-#include "BinaryTree.h"
+#include "BinaryTree.hpp"
 
 template <class T>
 bool BinarySearchTree<T>::isEmpty()
