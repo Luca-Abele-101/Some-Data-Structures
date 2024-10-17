@@ -1,7 +1,5 @@
 ﻿#include <iostream>
-
-#include "StackArray.hpp"
-#include "StackArrayTesting.hpp"
+#include "LimitedSizeStackTesting.hpp"
 
 int main()
 {

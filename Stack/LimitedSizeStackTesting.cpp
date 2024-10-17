@@ -1,12 +1,10 @@
-#include "StackArrayTesting.hpp"
-
 #include <memory>
-
-#include "StackArray.hpp"
+#include "LimitedSizeStackTesting.hpp"
+#include "LimitedSizeStack.hpp"
 
 bool checkBalanceBrackets(const std::string& text, int maxDeep)
 {
-	std::shared_ptr<Stack<char>> bracketsStack(new StackArray<char>(maxDeep));
+	std::shared_ptr<Stack<char>> bracketsStack(new LimitedSizeStack<char>(maxDeep));
 	for (size_t i = 0; i < text.size(); i++)
 	{
 		switch (text[i])
@@ -59,7 +57,7 @@ bool getPostfixFromInfix(const std::string& infix, std::string& postfix, size_t 
 
 	int countOfOperands = 0;
 	int countOfOperators = 0;
-	std::shared_ptr<Stack<char>> stack(new StackArray<char>(stackSize));
+	std::shared_ptr<LimitedSizeStack<char>> stack(new LimitedSizeStack<char>(stackSize));
 
 	for (size_t i = 0; i < infix.size(); i++)
 	{
@@ -137,7 +135,7 @@ int evaluatePostfix(const std::string& infix, size_t stackSize)
 	{
 		throw("Failed getting postfix form!");
 	}
-	std::shared_ptr<Stack<int>> stack(new StackArray<int>(stackSize));
+	std::shared_ptr<Stack<int>> stack(new LimitedSizeStack<int>(stackSize));
 	for (size_t i = 0; i < postfix.size(); i++)
 	{
 		if ((postfix[i] >= '0') && (postfix[i] <= '9'))
