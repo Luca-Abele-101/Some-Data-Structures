@@ -1,8 +1,10 @@
-#ifndef QUEUE_EXCEPTIONS_HPP
-#define QUEUE_EXCEPTIONS_HPP
+#ifndef __QUEUE_EXCEPTIONS_HPP
+#define __QUEUE_EXCEPTIONS_HPP
 
 #include <exception>
 
+// Исключение в случае попытки добавить элемент
+// в полностью заполненную ограниченную очередь.
 class QueueOverflow : public std::exception
 {
 public:
@@ -17,6 +19,8 @@ private:
 	const char* reason_;
 };
 
+// Исключение в случае попытки изъять
+// элемент из пустой очереди.
 class QueueUnderflow : public std::exception
 {
 public:
@@ -33,7 +37,6 @@ private:
 
 // Исключительная ситуация WrongQueueSize может возникнуть,
 // если в конструкторе очереди неправильно задан размер.
-
 class WrongQueueSize : public std::exception
 {
 public:

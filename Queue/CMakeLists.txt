@@ -4,8 +4,9 @@ project(Queue VERSION 1.0)
 
 set(SRC
 QueueVirtual.hpp
-Queue.hpp
 QueueExceptions.hpp
+LimitedSizeQueue.hpp
+LimitedSizeQueue.tpp
 main.cpp
 )
 
