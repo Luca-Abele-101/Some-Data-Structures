@@ -11,5 +11,7 @@ LimitedSizeStackTesting.hpp
 LimitedSizeStackTesting.cpp
 main.cpp
 )
-
 add_executable(${PROJECT_NAME} ${SRC})
+
+enable_testing()
+add_subdirectory(test)
