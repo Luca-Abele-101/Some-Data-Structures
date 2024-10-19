@@ -1,17 +1,17 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(AbstractTest)
+project(LimitedSizeQueueModuleTests)
 
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIR})
 
-add_executable(AbstractTest
-AbstractTest.cpp
+add_executable(${PROJECT_NAME}
+LimitedSizeQueueModuleTests.cpp
 )
 
-target_link_libraries(AbstractTest
+target_link_libraries(${PROJECT_NAME}
 GTest::GTest
 GTest::gtest_main
 )
 
-add_test(NAME AbstractTest COMMAND AbstractTest)
+add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})
