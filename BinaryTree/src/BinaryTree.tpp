@@ -215,15 +215,17 @@ BinarySearchTree<T>::Node<T>* BinarySearchTree<T>::findMaximum(Node<T>* subtree)
 }
 
 template <class T>
-void BinarySearchTree<T>::inorderWalk() const
+void BinarySearchTree<T>::inorderWalk(std::ostream& out) const
 {
-	return inorderWalk(this->root_);
+	inorderWalk(this->root_, out);
+	out << "\n";
 }
 
 template <class T>
-void BinarySearchTree<T>::iterativeInorderWalk() const
+void BinarySearchTree<T>::iterativeInorderWalk(std::ostream& out) const
 {
-	iterativeInorderWalk(this->root_);
+	iterativeInorderWalk(this->root_, out);
+	out << "\n";
 }
 
 template <class T>
@@ -335,18 +337,26 @@ void BinarySearchTree<T>::deleteSubtree(Node<T>* node)
 }
 
 template <class T>
-void BinarySearchTree<T>::inorderWalk(Node<T>* node) const
+void BinarySearchTree<T>::inorderWalk(Node<T>* node, std::ostream& out) const
 {
-	if (node != nullptr)
+	if(node != nullptr)
 	{
-		inorderWalk(node->left_);
-		std::cout << node->key_ << " ";
-		inorderWalk(node->right_);
+		if (node->left_ != nullptr)
+		{
+			inorderWalk(node->left_, out);
+			out << " ";
+		}
+		out << node->key_;
+		if (node->right_ != nullptr)
+		{
+			out << " ";
+			inorderWalk(node->right_, out);
+		}
 	}
 }
 
 template <class T>
-void BinarySearchTree<T>::iterativeInorderWalk(Node<T>* node) const
+void BinarySearchTree<T>::iterativeInorderWalk(Node<T>* node, std::ostream& out) const
 {
 	std::stack<Node<T>*> vault;
 	while ((vault.size() != 0) || (node != nullptr))
@@ -360,8 +370,11 @@ void BinarySearchTree<T>::iterativeInorderWalk(Node<T>* node) const
 		{
 			node = vault.top();
 			vault.pop();
-			std::cout << node->key_;
-			std::cout << " ";
+			out << node->key_;
+			if((node->right_ != nullptr) || (vault.size() != 0))
+			{
+				out << " ";
+			}
 			node = node->right_;
 		}
 	}
