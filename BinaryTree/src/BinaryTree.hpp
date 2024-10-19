@@ -1,5 +1,5 @@
-#ifndef __BINARY_SEARCH_TREE_H
-#define __BINARY_SEARCH_TREE_H
+#ifndef __BINARY_SEARCH_TREE_HPP
+#define __BINARY_SEARCH_TREE_HPP
 
 #include <iostream>
 #include <stack>
@@ -40,15 +40,15 @@ public:
 
 	bool insert(const T& key);
 	bool deleteKey(const T& key);
-	void print(std::ostream& out) const;
+	void print(std::ostream& out = std::cout) const;
 	int getCount() const;
 	int getHeight() const;
 	bool isEmpty();
 
 	// Инфиксный обход дерева (итеративный)
-	void iterativeInorderWalk() const;
+	void iterativeInorderWalk(std::ostream& out = std::cout) const;
 	// Инфиксный обход дерева (рекурсивный)
-	void inorderWalk() const;
+	void inorderWalk(std::ostream& out = std::cout) const;
 
 private:
 	Node<T>* root_;
@@ -65,8 +65,8 @@ private:
 	Node<T>* findMaximumNode(Node<T>* subtree) const;
 	Node<T>* iterativeSearchNode(const T& key) const;
 	Node<T>* recursiveSearchNode(Node<T>* x, const T& key) const;
-	void inorderWalk(Node<T>* node) const;
-	void iterativeInorderWalk(Node<T>* node) const;
+	void inorderWalk(Node<T>* node, std::ostream& out) const;
+	void iterativeInorderWalk(Node<T>* node, std::ostream& out) const;
 };
 
 #include "BinaryTree.tpp"
