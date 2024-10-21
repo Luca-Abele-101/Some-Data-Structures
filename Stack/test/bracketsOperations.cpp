@@ -1,5 +1,5 @@
 #include <memory>
-#include "LimitedSizeStackTesting.hpp"
+#include "bracketsOperations.hpp"
 #include "LimitedSizeStack.hpp"
 
 bool checkBalanceBrackets(const std::string& text, int maxDeep)
@@ -54,10 +54,14 @@ bool getPostfixFromInfix(const std::string& infix, std::string& postfix, size_t 
 	{
 		return false;
 	}
+	if (infix.size() == 0)
+	{
+		return true;
+	}
 
 	int countOfOperands = 0;
 	int countOfOperators = 0;
-	std::shared_ptr<LimitedSizeStack<char>> stack(new LimitedSizeStack<char>(stackSize));
+	std::shared_ptr<Stack<char>> stack(new LimitedSizeStack<char>(stackSize));
 
 	for (size_t i = 0; i < infix.size(); i++)
 	{
@@ -78,7 +82,8 @@ bool getPostfixFromInfix(const std::string& infix, std::string& postfix, size_t 
 			break;
 		case '+':
 			countOfOperators++;
-			while ((!stack->isEmpty()) && ((stack->top() == '*') || (stack->top() == '/') || (stack->top() == '+') || (stack->top() == '-')))
+			while ((!stack->isEmpty()) && ((stack->top() == '*') || (stack->top() == '/') ||
+					(stack->top() == '+') || (stack->top() == '-')))
 			{
 				postfix += stack->pop();
 			}
@@ -86,7 +91,8 @@ bool getPostfixFromInfix(const std::string& infix, std::string& postfix, size_t 
 			break;
 		case '-':
 			countOfOperators++;
-			while ((!stack->isEmpty()) && ((stack->top() == '*') || (stack->top() == '/') || (stack->top() == '+') || (stack->top() == '-')))
+			while ((!stack->isEmpty()) && ((stack->top() == '*') || (stack->top() == '/') ||
+					(stack->top() == '+') || (stack->top() == '-')))
 			{
 				postfix += stack->pop();
 			}
@@ -133,7 +139,7 @@ int evaluatePostfix(const std::string& infix, size_t stackSize)
 	std::string postfix;
 	if (!getPostfixFromInfix(infix, postfix, stackSize))
 	{
-		throw("Failed getting postfix form!");
+		throw EvaluatingPostfixException("Failed getting postfix form!");
 	}
 	std::shared_ptr<Stack<int>> stack(new LimitedSizeStack<int>(stackSize));
 	for (size_t i = 0; i < postfix.size(); i++)
@@ -146,12 +152,12 @@ int evaluatePostfix(const std::string& infix, size_t stackSize)
 		{
 			if (stack->isEmpty())
 			{
-				throw ("Incorrect postix notation! Not enough operands.");
+				throw EvaluatingPostfixException("Incorrect postfix notation! Not enough operands.");
 			}
 			b = stack->pop();
 			if (stack->isEmpty())
 			{
-				throw ("Incorrect postix notation! Not enough operands.");
+				throw EvaluatingPostfixException("Incorrect postfix notation! Not enough operands.");
 			}
 			a = stack->pop();
 			switch (postfix[i])
@@ -169,19 +175,19 @@ int evaluatePostfix(const std::string& infix, size_t stackSize)
 				stack->push(a / b);
 				break;
 			default:
-				throw("Unknown char in postfix string!");
+				throw EvaluatingPostfixException("Unknown char in postfix string!");
 				break;
 			}
 		}
 	}
 	if (stack->isEmpty())
 	{
-		throw("Incorrect postfix notation! No answer.");
+		throw EvaluatingPostfixException("Incorrect postfix notation! No answer.");
 	}
 	res = stack->pop();
 	if (!stack->isEmpty())
 	{
-		throw("Incorrect postfix notation! Not enough operators.");
+		throw EvaluatingPostfixException("Incorrect postfix notation! Not enough operators.");
 	}
 	return res;
 }
