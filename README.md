@@ -13,3 +13,10 @@ mkdir build && cd build
 cmake ../
 make
 ```
+
+## Test
+
+For testing projects after build, use:
+```
+ctest
+```
