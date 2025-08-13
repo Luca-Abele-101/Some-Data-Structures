@@ -1,4 +1,6 @@
+#include "gtest/gtest.h"
 #include <memory>
+#include <string>
 #include "bracketsOperations.hpp"
 #include "LimitedSizeStack.hpp"
 
