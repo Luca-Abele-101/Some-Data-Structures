@@ -1,0 +1,81 @@
+name: Data Structures Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      # true if stable, false if thorough testing
+      fail-fast: false
+      # Build List:
+      # 1. <Windows, Release, latest GCC/Clang compiler, default generator>
+      # 2. <Linux, Release, latest GCC/Clang compiler, default generator>
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        build_type: [Release]
+        cpp_compiler: [gcc, clang]
+
+        #include/exclude:
+        #  - os: debian-latest
+        #    c_compiler: gcc
+        #    cpp_compiler: gcc
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install VCpkg & GTest for Windows build
+      if: matrix.os == 'windows-latest'
+      run: |
+        git clone https://github.com/Microsoft/vcpkg.git
+        ./vcpkg/bootstrap-vcpkg.bat
+        ./vcpkg/vcpkg install gtest
+
+    - name: Install Build-Essentials & GTest for Ubuntu build
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get install -y build-essential
+        sudo apt-get install -y libgtest-dev
+        cd /usr/src/gtest
+        sudo cmake .
+        sudo make
+        sudo cp ./lib/libgtest.a /usr/lib
+        sudo cp ./lib/libgtest_main.a /usr/lib
+
+    - name: Set reusable strings
+      # Turn repeated input strings into step outputs
+      id: strings
+      shell: bash
+      run: echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory.
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }} \
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+        -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}${{ matrix.os == 'windows-latest' && '/vcpkg/scripts/buildsystems/vcpkg.cmake' || '' }} \
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+        -S ${{ github.workspace }}
+
+    - name: Build
+      # Build program with the given configuration.
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - name: Cache build files
+      uses: actions/cache@v4
+      with:
+        key: build-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.cpp_compiler }}-${{ github.run_id }}
+        path: ${{ steps.strings.outputs.build-output-dir }}
+
+    ## Deprecate uploading via artifacts
+    #- name: Upload build artifacts
+    #  uses: actions/upload-artifact@v4
+    #  with:
+    #    name: build-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.cpp_compiler }}
+    #    path: ${{ steps.strings.outputs.build-output-dir }}
+    #    retention-days: 1

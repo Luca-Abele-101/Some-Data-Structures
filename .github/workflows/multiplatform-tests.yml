@@ -1,0 +1,82 @@
+name: Data Structures Test
+
+on:
+  workflow_run:
+    workflows: ["Data Structures Build"]
+    types:
+      - completed
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    permissions:
+      actions: write  # Main rights for cache managing
+      contents: read  # Base rights
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        build_type: [Release]
+        cpp_compiler: [gcc, clang]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        ls ${{ steps.strings.outputs.build-output-dir }}
+
+    - name: Restore cache
+      uses: actions/cache@v4
+      with:
+        key: build-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.cpp_compiler }}-${{ github.event.workflow_run.id }}
+        path: ${{ steps.strings.outputs.build-output-dir }}
+
+    ## Deprecate downloading via artifacts
+    #- name: Download build artifacts
+    #  uses: actions/download-artifact@v4
+    #  with:
+    #    run-id: ${{ github.event.workflow_run.id }}
+    #    name: build-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.cpp_compiler }}
+    #    #github-token: ${{ github.token }}
+    #    #workflow: multiplatform-build.yml
+    #    path: ${{ steps.strings.outputs.build-output-dir }}
+
+    - name: Fix permissions (Linux only)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        echo "Fixing permissions for test executables..."
+        chmod -R +x ${{ steps.strings.outputs.build-output-dir }}
+        find ${{ steps.strings.outputs.build-output-dir }} -type f -executable -exec chmod +x {} \;
+
+    - name: Test
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      # Execute tests defined by the CMake configuration.
+      run: ctest --build-config ${{ matrix.build_type }} --output-on-failure --verbose
+
+    - name: Cleanup cache
+      if: always()  # Executes even if tests failed
+      shell: bash
+      run: |
+          CACHE_KEY="build-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.cpp_compiler }}-${{ github.event.workflow_run.id }}"
+          URL="https://api.github.com/repos/${{ github.repository }}/actions/caches?key=$CACHE_KEY"
+          curl -X DELETE \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "$URL"
+
+      ## Deprecate cleaning up artifacts
+      #if: always()  # Executes even if tests failed
+      #shell: bash
+      #run: |
+      #  #WIN_DIR=$(cygpath -w ${{ steps.strings.outputs.build-output-dir }})
+      #  if [ "${{ matrix.os }}" = "windows-latest" ]; then
+      #    #rmdir /s /q \"$WIN_DIR\"
+      #    rm -r ${{ steps.strings.outputs.build-output-dir }}
+      #  elif [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+      #    rm -rf ${{ steps.strings.outputs.build-output-dir }}
+      #  fi
