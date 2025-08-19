@@ -66,7 +66,7 @@ jobs:
           URL="https://api.github.com/repos/${{ github.repository }}/actions/caches?key=$CACHE_KEY"
           curl -X DELETE \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
+            -H "Accept: application/vnd.github+json" \
             "$URL"
 
       ## Deprecate cleaning up artifacts
@@ -80,3 +80,4 @@ jobs:
       #  elif [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
       #    rm -rf ${{ steps.strings.outputs.build-output-dir }}
       #  fi
+
